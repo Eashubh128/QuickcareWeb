@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "261877223607",
+    "firebase_url": "https://quickcare-22cba-default-rtdb.firebaseio.com",
+    "project_id": "quickcare-22cba",
+    "storage_bucket": "quickcare-22cba.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:261877223607:android:4979dfc30e6770b2ba3d32",
+        "android_client_info": {
+          "package_name": "com.example.quickcare"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "261877223607-l10ttu0hqgmpslh8cqqi6lv92eckvogr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCDpLm8K_XCjHlSSRhtKZ7cKneKxqMgxQs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "261877223607-l10ttu0hqgmpslh8cqqi6lv92eckvogr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
