@@ -10,7 +10,7 @@ import 'package:quickcare/firebase_options.dart';
 import 'package:quickcare/provider/bledeviceprovider.dart';
 import 'package:quickcare/provider/custom_auth_provider.dart';
 import 'package:quickcare/provider/deviceslistprovider.dart';
-import 'package:quickcare/provider/loginprovider.dart';
+
 import 'package:quickcare/provider/themeprovider.dart';
 import 'package:quickcare/router.dart';
 import 'package:quickcare/screens/web/homescreen_web.dart';

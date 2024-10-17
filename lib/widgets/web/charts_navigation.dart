@@ -18,25 +18,18 @@ class ChartNavigation extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
       children: [
         IconButton(
-          icon: const Icon(
-            Icons.arrow_back,
-            color: DarkTheme.primaryWhite,
-          ),
+          icon: const Icon(Icons.arrow_back, color: DarkTheme.primaryWhite),
           onPressed: () => onOffsetChanged(offset + 1),
         ),
         Text(
           _getDisplayText(),
-          style: const TextStyle(
-            color: DarkTheme.primaryWhite,
-          ),
+          style: const TextStyle(color: DarkTheme.primaryWhite),
         ),
         IconButton(
-          icon: const Icon(
-            Icons.arrow_forward,
-            color: DarkTheme.primaryWhite,
-          ),
+          icon: const Icon(Icons.arrow_forward, color: DarkTheme.primaryWhite),
           onPressed: offset > 0 ? () => onOffsetChanged(offset - 1) : null,
         ),
       ],
@@ -53,7 +46,7 @@ class ChartNavigation extends StatelessWidget {
       case 'Weekly':
         final weekStart = date.subtract(Duration(days: date.weekday - 1));
         final weekEnd = weekStart.add(const Duration(days: 6));
-        return 'Week ${DateFormat('w').format(date)}: ${DateFormat('MMM d').format(weekStart)} - ${DateFormat('MMM d').format(weekEnd)}';
+        return '${DateFormat('MMM d').format(weekStart)} - ${DateFormat('MMM d').format(weekEnd)}';
       case 'Monthly':
         return DateFormat('MMMM yyyy').format(date);
       default:

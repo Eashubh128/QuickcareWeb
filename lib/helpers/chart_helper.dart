@@ -39,21 +39,126 @@ ChartDateRange getDateRange(String frequency, int offset) {
 List<ChartSampleData> filterChartData(
     List<History> history, String frequency, int offset) {
   final dateRange = getDateRange(frequency, offset);
-
-  List<History> filteredHistory = history
+  final filteredHistory = history
       .where((h) =>
           h.time.isAfter(dateRange.start) && h.time.isBefore(dateRange.end))
       .toList();
 
-  return filteredHistory
-      .map((h) => ChartSampleData(
-            x: _getFormattedDate(h.time, frequency),
-            y: h.battRem,
-            secondSeriesYValue: h.cupsRem,
-            thirdSeriesYValue: h.washRem1,
-          ))
-      .toList();
+  switch (frequency) {
+    case 'Daily':
+      return _processDailyData(filteredHistory, dateRange.start);
+    case 'Weekly':
+      return _processWeeklyData(filteredHistory, dateRange.start);
+    case 'Monthly':
+      return _processMonthlyData(filteredHistory, dateRange.start);
+    default:
+      return [];
+  }
 }
+
+List<ChartSampleData> _processDailyData(List<History> history, DateTime date) {
+  return List.generate(24, (hour) {
+    final hourStart = DateTime(date.year, date.month, date.day, hour);
+    final hourEnd = hourStart.add(const Duration(hours: 1));
+    final hourData = history
+        .where((h) => h.time.isAfter(hourStart) && h.time.isBefore(hourEnd))
+        .toList();
+
+    if (hourData.isEmpty) {
+      return ChartSampleData(x: '$hour:00');
+    }
+
+    final first = hourData.first;
+    final last = hourData.last;
+
+    return ChartSampleData(
+      x: '$hour:00',
+      startBattRem: first.battRem,
+      startCupsRem: first.cupsRem,
+      startWashRem1: first.washRem1,
+      endBattRem: last.battRem,
+      endCupsRem: last.cupsRem,
+      endWashRem1: last.washRem1,
+    );
+  });
+}
+
+List<ChartSampleData> _processWeeklyData(
+    List<History> history, DateTime weekStart) {
+  return List.generate(7, (dayIndex) {
+    final dayStart = weekStart.add(Duration(days: dayIndex));
+    final dayEnd = dayStart.add(const Duration(days: 1));
+    final dayData = history
+        .where((h) => h.time.isAfter(dayStart) && h.time.isBefore(dayEnd))
+        .toList();
+
+    if (dayData.isEmpty) {
+      return ChartSampleData(x: DateFormat('EEE').format(dayStart));
+    }
+
+    final first = dayData.first;
+    final last = dayData.last;
+
+    return ChartSampleData(
+      x: DateFormat('EEE').format(dayStart),
+      startBattRem: first.battRem,
+      startCupsRem: first.cupsRem,
+      startWashRem1: first.washRem1,
+      endBattRem: last.battRem,
+      endCupsRem: last.cupsRem,
+      endWashRem1: last.washRem1,
+    );
+  });
+}
+
+List<ChartSampleData> _processMonthlyData(
+    List<History> history, DateTime monthStart) {
+  final daysInMonth = DateTime(monthStart.year, monthStart.month + 1, 0).day;
+
+  return List.generate(daysInMonth, (dayIndex) {
+    final dayStart = DateTime(monthStart.year, monthStart.month, dayIndex + 1);
+    final dayEnd = dayStart.add(const Duration(days: 1));
+    final dayData = history
+        .where((h) => h.time.isAfter(dayStart) && h.time.isBefore(dayEnd))
+        .toList();
+
+    if (dayData.isEmpty) {
+      return ChartSampleData(x: DateFormat('d').format(dayStart));
+    }
+
+    final first = dayData.first;
+    final last = dayData.last;
+
+    return ChartSampleData(
+      x: DateFormat('d').format(dayStart),
+      startBattRem: first.battRem,
+      startCupsRem: first.cupsRem,
+      startWashRem1: first.washRem1,
+      endBattRem: last.battRem,
+      endCupsRem: last.cupsRem,
+      endWashRem1: last.washRem1,
+    );
+  });
+}
+
+// List<ChartSampleData> filterChartData(
+//     List<History> history, String frequency, int offset) {
+//   final dateRange = getDateRange(frequency, offset);
+
+//   List<History> filteredHistory = history
+//       .where((h) =>
+//           h.time.isAfter(dateRange.start) && h.time.isBefore(dateRange.end))
+//       .toList();
+
+//   return filteredHistory
+//       .map((h) => ChartSampleData(
+//             x: _getFormattedDate(h.time, frequency),
+//             y: h.battRem,
+//             secondSeriesYValue: h.cupsRem,
+//             thirdSeriesYValue: h.washRem1,
+//           ))
+//       .toList();
+// }
 
 String _getFormattedDate(DateTime date, String frequency) {
   switch (frequency) {

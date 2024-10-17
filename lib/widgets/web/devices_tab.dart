@@ -15,7 +15,7 @@ import 'package:quickcare/helpers/excel_helper.dart';
 import 'package:quickcare/models/devicemodel.dart';
 import 'package:quickcare/provider/deviceslistprovider.dart';
 import 'package:quickcare/provider/themeprovider.dart';
-import 'package:quickcare/widgets/web/chart_navigation.dart';
+
 import 'package:quickcare/widgets/web/charts_navigation.dart';
 import 'package:quickcare/widgets/web/data_chart.dart';
 import 'package:quickcare/widgets/web/device_detail_tile.dart';
@@ -445,18 +445,45 @@ class _DevicesTabState extends State<DevicesTab> with TickerProviderStateMixin {
   Widget drawChart(String selectedFrequency) {
     return Column(
       children: [
-        ChartNavigation(
-          frequency: selectedFrequency,
-          offset: _offset,
-          onOffsetChanged: (newOffset) {
-            setState(() {
-              _offset = newOffset;
-            });
-          },
+        Expanded(
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ChartNavigation(
+                frequency: selectedFrequency,
+                offset: _offset,
+                onOffsetChanged: (newOffset) {
+                  setState(() {
+                    _offset = newOffset;
+                  });
+                },
+              ),
+              const Text(
+                'Chart Type: ',
+                style: TextStyle(color: DarkTheme.primaryWhite),
+              ),
+              Switch(
+                value:
+                    Provider.of<DevicesListProvider>(context).showAsLineChart(),
+                onChanged: (value) {
+                  Provider.of<DevicesListProvider>(context, listen: false)
+                      .toggleChartType();
+                },
+              ),
+              Text(
+                Provider.of<DevicesListProvider>(context).showAsLineChart()
+                    ? 'Line'
+                    : 'Range Column',
+                style: const TextStyle(
+                  color: DarkTheme.primaryWhite,
+                ),
+              ),
+            ],
+          ),
         ),
         Container(
           width: 864.w,
-          height: 303.h,
+          height: 550.h,
           padding: EdgeInsets.symmetric(horizontal: 0, vertical: 30.h),
           child: TabBarView(
             controller: _tabController,

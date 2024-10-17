@@ -4,6 +4,7 @@ import 'package:quickcare/screens/web/resetpassscreen.dart';
 import 'package:quickcare/screens/web/splashscreen_web.dart';
 import 'package:quickcare/screens/web/authsignin.dart';
 import 'package:quickcare/screens/web/homescreen_web.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 final GoRouter router = GoRouter(
   routes: <RouteBase>[
@@ -18,10 +19,9 @@ final GoRouter router = GoRouter(
           const SigninScreen(),
     ),
     GoRoute(
-      path: '/home',
-      builder: (BuildContext context, GoRouterState state) =>
-          const HomeScreenWeb(),
-    ),
+        path: '/home',
+        builder: (BuildContext context, GoRouterState state) =>
+            const SplashScreen()),
     GoRoute(
       path: '/reset-password',
       builder: (BuildContext context, GoRouterState state) {

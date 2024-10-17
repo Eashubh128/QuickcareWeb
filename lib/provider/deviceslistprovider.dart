@@ -25,6 +25,18 @@ class DevicesListProvider extends ChangeNotifier {
   String? _selectedCity;
   String? _searchQuery;
 
+  bool _showAsLineChart = true;
+
+  void toggleChartType() {
+    _showAsLineChart = !_showAsLineChart;
+    ;
+    notifyListeners();
+  }
+
+  bool showAsLineChart() {
+    return _showAsLineChart;
+  }
+
   void setSelectedFrequency(String frequency) {
     _selectedFrequency = frequency;
     notifyListeners();

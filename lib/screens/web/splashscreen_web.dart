@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:quickcare/constants/asset_constants.dart';
 import 'package:quickcare/constants/color_constants.dart';
 import 'package:quickcare/provider/custom_auth_provider.dart';
-import 'package:quickcare/provider/loginprovider.dart';
+
 import 'package:quickcare/screens/web/authsignin.dart';
 import 'package:quickcare/screens/web/homescreen_web.dart';
 
