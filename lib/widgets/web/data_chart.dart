@@ -68,6 +68,16 @@ class _DataChartState extends State<DataChart> {
       tooltipBehavior: TooltipBehavior(
           enable: true,
           color: Colors.white,
+          // builder: (dynamic data, dynamic point, dynamic series, int pointIndex,
+          //     int seriesIndex) {
+          //   return Container(
+          //       height: 50,
+          //       width: 100,
+          //       child: Text('$pointIndex'),
+          //       decoration: const BoxDecoration(
+          //         color: DarkTheme.disabledWhite,
+          //       ));
+          // },
           textStyle: const TextStyle(color: DarkTheme.primaryBackground)),
       legend: const Legend(isVisible: true, position: LegendPosition.bottom),
     );
@@ -84,8 +94,9 @@ class _DataChartState extends State<DataChart> {
             yValueMapper: (ChartSampleData data, _) => data.startBattRem,
             name: 'Battery Start',
             color: DarkTheme.primaryGreen.withOpacity(0.7),
-            markerSettings: MarkerSettings(isVisible: true),
-            dataLabelSettings: DataLabelSettings(isVisible: true),
+            markerSettings: const MarkerSettings(isVisible: true),
+            dataLabelSettings:
+                const DataLabelSettings(isVisible: true, color: Colors.white),
           ),
           LineSeries<ChartSampleData, String>(
             dataSource: chartData,
@@ -93,8 +104,9 @@ class _DataChartState extends State<DataChart> {
             yValueMapper: (ChartSampleData data, _) => data.endBattRem,
             name: 'Battery End',
             color: DarkTheme.primaryGreen,
-            markerSettings: MarkerSettings(isVisible: true),
-            dataLabelSettings: DataLabelSettings(isVisible: true),
+            markerSettings: const MarkerSettings(isVisible: true),
+            dataLabelSettings:
+                const DataLabelSettings(isVisible: true, color: Colors.white),
           ),
         ];
       case 2: // Battery
@@ -118,7 +130,7 @@ class _DataChartState extends State<DataChart> {
             dataLabelSettings: DataLabelSettings(isVisible: true),
           ),
         ];
-      case 3: // Battery
+      case 3:
         return [
           LineSeries<ChartSampleData, String>(
             dataSource: chartData,

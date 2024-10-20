@@ -2,6 +2,8 @@ import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/foundation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crypto/crypto.dart';
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -10,6 +12,8 @@ class CustomAuthProvider extends ChangeNotifier {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseFunctions _functions = FirebaseFunctions.instance;
   String? _currentUserId;
+  bool _isLoading = true;
+  bool get isLoading => _isLoading;
 
   Map<String, dynamic>? _currentUser;
 
@@ -26,6 +30,8 @@ class CustomAuthProvider extends ChangeNotifier {
     if (storedUserId != null) {
       await _loadUserData(storedUserId);
     }
+    _isLoading = false;
+    notifyListeners();
   }
 
   Future<void> _loadUserData(String userId) async {
@@ -140,12 +146,15 @@ class CustomAuthProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> signOut() async {
+  Future<void> signOut(BuildContext context) async {
     _currentUserId = null;
     _currentUser = null;
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('userId');
     notifyListeners();
+    if (context.mounted) {
+      context.go('/signin');
+    }
   }
 
   String _hashPassword(String password) {

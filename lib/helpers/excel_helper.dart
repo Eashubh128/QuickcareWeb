@@ -32,13 +32,13 @@ class ExcelHelper {
       'Client Address',
       'Floor Info',
       'Postcode Place',
-      'Device Type',
+      'Device Model',
       'CSC Details',
       'Contact Person Name',
       'Contact Person Number'
     ];
     List<String> invoiceHeaders = [
-      'Device Type',
+      'Device Model',
       "SerialNo",
       "ClientNo",
       'Client Name',
@@ -46,6 +46,7 @@ class ExcelHelper {
       'Floor',
       "Add. Information",
       "Postcode (Place)",
+      "City",
       "Cups Level Start",
       "Cups Refilled",
       "Number of Cups Refilled",
@@ -55,6 +56,7 @@ class ExcelHelper {
       "Liquid Refilled",
       "Number of Liquid Refilled",
       "Liquid Level End",
+      "Liquid Used",
       "Battery Level Start",
       "Battery Level End"
     ];
@@ -146,6 +148,7 @@ class ExcelHelper {
         double batteryLevelStart = 0;
         double batteryLevelEnd = 0;
         double liquidUsedInGivenTime = 0;
+        String city = device.cscDetails.split(",").lastOrNull ?? "No info";
 
         List<History> filteredHistory = device.history.where((history) {
           return history.time.isAfter(startDate) &&
@@ -171,29 +174,32 @@ class ExcelHelper {
         sheet.getRangeByIndex(currentRow, 6).setText(device.floorInfo);
         sheet.getRangeByIndex(currentRow, 7).setText("");
         sheet.getRangeByIndex(currentRow, 8).setText(device.postCodePlace);
-        sheet.getRangeByIndex(currentRow, 9).setText(cupsLevelStart.toString());
-        sheet.getRangeByIndex(currentRow, 10).setText("No info");
-        sheet.getRangeByIndex(currentRow, 11).setText("No info");
-        sheet.getRangeByIndex(currentRow, 12).setText(cupsLevelEnd.toString());
+        sheet.getRangeByIndex(currentRow, 9).setText(city);
         sheet
-            .getRangeByIndex(currentRow, 13)
-            .setText(cupsUsedInGivenTime.toString());
+            .getRangeByIndex(currentRow, 10)
+            .setText(cupsLevelStart.toString());
+        sheet.getRangeByIndex(currentRow, 11).setText("No info");
+        sheet.getRangeByIndex(currentRow, 12).setText("No info");
+        sheet.getRangeByIndex(currentRow, 13).setText(cupsLevelEnd.toString());
         sheet
             .getRangeByIndex(currentRow, 14)
-            .setText(liquidLevelStart.toString());
-        sheet.getRangeByIndex(currentRow, 15).setText("No info");
-        sheet.getRangeByIndex(currentRow, 16).setText("No info");
+            .setText(cupsUsedInGivenTime.toString());
         sheet
-            .getRangeByIndex(currentRow, 17)
-            .setText(liquidLevelEnd.toString());
+            .getRangeByIndex(currentRow, 15)
+            .setText(liquidLevelStart.toString());
+        sheet.getRangeByIndex(currentRow, 16).setText("No info");
+        sheet.getRangeByIndex(currentRow, 17).setText("No info");
         sheet
             .getRangeByIndex(currentRow, 18)
-            .setText(liquidUsedInGivenTime.toString());
+            .setText(liquidLevelEnd.toString());
         sheet
             .getRangeByIndex(currentRow, 19)
-            .setText(batteryLevelStart.toString());
+            .setText(liquidUsedInGivenTime.toString());
         sheet
             .getRangeByIndex(currentRow, 20)
+            .setText(batteryLevelStart.toString());
+        sheet
+            .getRangeByIndex(currentRow, 21)
             .setText(batteryLevelEnd.toString());
 
         if (filteredHistory.isEmpty) {

@@ -94,10 +94,7 @@ class _SigninScreenState extends State<SigninScreen>
               right: 20.w,
               top: 50.h,
               bottom: 50.h,
-              // child: SigninWebContainer(
-              //   tabController: _tabController!,
-              // ),
-              child: Container(
+              child: SizedBox(
                 width: 414
                     .w, // Set this to match the width of your SigninWebContainer
                 child: TabBarView(

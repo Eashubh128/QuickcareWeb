@@ -9,6 +9,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:quickcare/constants/app_strings.dart';
 import 'package:quickcare/constants/color_constants.dart';
+import 'package:quickcare/helpers/ui_utils_helpers.dart';
 import 'package:quickcare/provider/custom_auth_provider.dart';
 
 import 'package:quickcare/screens/web/homescreen_web.dart';
@@ -207,21 +208,19 @@ class _SigninWebContainerState extends State<SigninWebContainer> {
 
   void _signIn() async {
     try {
+      UiUtilsHelper.showProgress(context);
       bool result =
           await Provider.of<CustomAuthProvider>(context, listen: false).signIn(
               _userNameController.text.trim(), _passwordController.text.trim());
+
+      UiUtilsHelper.dismissProgress();
       if (result) {
         GoRouter.of(context).go('/home');
-        // // Navigator.pushReplacement(
-        // //   context,
-        // //   MaterialPageRoute(
-        // //     builder: (context) => const HomeScreenWeb(),
-        // //   ),
-        // );
       } else {
         Fluttertoast.showToast(msg: "Login failed. Please try again.");
       }
     } catch (e) {
+      UiUtilsHelper.dismissProgress();
       Fluttertoast.showToast(msg: e.toString());
     }
   }

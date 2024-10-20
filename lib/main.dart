@@ -5,6 +5,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:quickcare/constants/color_constants.dart';
 import 'package:quickcare/controllers/notification_controller.dart';
 import 'package:quickcare/firebase_options.dart';
 import 'package:quickcare/provider/bledeviceprovider.dart';
@@ -22,9 +23,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // await dotenv.load(
-  //   fileName: "assets/dotenv",
-  // );
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -39,8 +37,7 @@ Future<void> main() async {
     log("Error in getting token ");
   }
 
-  runApp(
-    MultiProvider(
+  runApp(MultiProvider(
       providers: [
         ChangeNotifierProvider(
           create: (context) => BleDeviceProvider(),
@@ -58,12 +55,34 @@ Future<void> main() async {
       ],
       child: ScreenUtilInit(
         designSize: const Size(1280, 832),
-        child: MaterialApp.router(
+        child: MyApp(),
+      )));
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: Provider.of<CustomAuthProvider>(context, listen: false)
+          .checkSession(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(
+            child: SizedBox(
+              width: 50.w,
+              height: 50.w,
+              child: const CircularProgressIndicator(
+                color: DarkTheme.primaryBackground,
+              ),
+            ),
+          );
+        }
+        return MaterialApp.router(
+          routerConfig: router,
           debugShowCheckedModeBanner: false,
           theme: ThemeData(fontFamily: "Poppins"),
-          routerConfig: router,
-        ),
-      ),
-    ),
-  );
+        );
+      },
+    );
+  }
 }

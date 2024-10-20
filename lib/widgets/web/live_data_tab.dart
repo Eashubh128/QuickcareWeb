@@ -12,6 +12,7 @@ import 'package:quickcare/constants/app_strings.dart';
 import 'package:quickcare/constants/color_constants.dart';
 import 'package:quickcare/helpers/chart_helper.dart';
 import 'package:quickcare/helpers/excel_helper.dart';
+import 'package:quickcare/helpers/ui_utils_helpers.dart';
 import 'package:quickcare/models/devicemodel.dart';
 import 'package:quickcare/provider/deviceslistprovider.dart';
 import 'package:quickcare/provider/themeprovider.dart';
@@ -203,12 +204,13 @@ class _LiveDataTabState extends State<LiveDataTab>
                               child: CircularProgressIndicator());
                         },
                       );
+                      UiUtilsHelper.showProgress(context);
                       await ExcelHelper.createExcelFile(
                           deviceListProvider.filteredDevices,
                           dateRange.start,
                           dateRange.end,
                           isInvoicing: isInvoicing);
-
+                      UiUtilsHelper.dismissProgress();
                       Navigator.of(context).pop();
                     }
                   }
@@ -224,12 +226,13 @@ class _LiveDataTabState extends State<LiveDataTab>
                         return const Center(child: CircularProgressIndicator());
                       },
                     );
+                    UiUtilsHelper.showProgress(context);
                     await ExcelHelper.createExcelFile(
                         deviceListProvider.devicesList,
                         dateRange.start,
                         dateRange.end,
                         isInvoicing: false);
-
+                    UiUtilsHelper.dismissProgress();
                     Navigator.of(context).pop();
                   }
                 }

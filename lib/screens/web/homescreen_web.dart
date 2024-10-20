@@ -144,21 +144,6 @@ class _HomeScreenWebState extends State<HomeScreenWeb> {
                       onPressed: () async {
                         currentTab = 3;
                         setState(() {});
-                        // if (Provider.of<LoginProvider>(context, listen: false)
-                        //         .user!
-                        //         .displayName
-                        //         ?.contains("AD") ==
-                        //     true) {
-                        //   print(
-                        //       Provider.of<LoginProvider>(context, listen: false)
-                        //           .user!
-                        //           .displayName);
-                        //   currentTab = 3;
-                        //   setState(() {});
-                        // } else {
-                        //   Fluttertoast.showToast(
-                        //       msg: AppStrings.dontHavePermissionToCreateAcc);
-                        // }
                       },
                       child: Text(
                         AppStrings.createAccount,
@@ -175,13 +160,7 @@ class _HomeScreenWebState extends State<HomeScreenWeb> {
                         var isSignedOut = await Provider.of<CustomAuthProvider>(
                                 context,
                                 listen: false)
-                            .signOut();
-
-                        Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const SigninScreen()),
-                            (_) => true);
+                            .signOut(context);
                       },
                       child: Text(
                         AppStrings.logOut,
