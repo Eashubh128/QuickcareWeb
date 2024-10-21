@@ -60,6 +60,7 @@ List<ChartSampleData> _processDailyData(List<History> history, DateTime date) {
   return List.generate(24, (hour) {
     final hourStart = DateTime(date.year, date.month, date.day, hour);
     final hourEnd = hourStart.add(const Duration(hours: 1));
+
     final hourData = history
         .where((h) => h.time.isAfter(hourStart) && h.time.isBefore(hourEnd))
         .toList();
@@ -68,11 +69,15 @@ List<ChartSampleData> _processDailyData(List<History> history, DateTime date) {
       return ChartSampleData(x: '$hour:00');
     }
 
+    final int cupsDispensed = hourData.length;
+
     final first = hourData.first;
     final last = hourData.last;
 
     return ChartSampleData(
       x: '$hour:00',
+      cupsUsed: cupsDispensed,
+      liquidUsed: cupsDispensed * 15,
       startBattRem: first.battRem,
       startCupsRem: first.cupsRem,
       startWashRem1: first.washRem1,
@@ -95,12 +100,15 @@ List<ChartSampleData> _processWeeklyData(
     if (dayData.isEmpty) {
       return ChartSampleData(x: DateFormat('EEE').format(dayStart));
     }
+    final int cupsDispensed = dayData.length;
 
     final first = dayData.first;
     final last = dayData.last;
 
     return ChartSampleData(
       x: DateFormat('EEE').format(dayStart),
+      cupsUsed: cupsDispensed,
+      liquidUsed: cupsDispensed * 15,
       startBattRem: first.battRem,
       startCupsRem: first.cupsRem,
       startWashRem1: first.washRem1,
@@ -126,11 +134,15 @@ List<ChartSampleData> _processMonthlyData(
       return ChartSampleData(x: DateFormat('d').format(dayStart));
     }
 
+    final int cupsDispensed = dayData.length;
+
     final first = dayData.first;
     final last = dayData.last;
 
     return ChartSampleData(
       x: DateFormat('d').format(dayStart),
+      cupsUsed: cupsDispensed,
+      liquidUsed: cupsDispensed * 15,
       startBattRem: first.battRem,
       startCupsRem: first.cupsRem,
       startWashRem1: first.washRem1,
@@ -140,25 +152,6 @@ List<ChartSampleData> _processMonthlyData(
     );
   });
 }
-
-// List<ChartSampleData> filterChartData(
-//     List<History> history, String frequency, int offset) {
-//   final dateRange = getDateRange(frequency, offset);
-
-//   List<History> filteredHistory = history
-//       .where((h) =>
-//           h.time.isAfter(dateRange.start) && h.time.isBefore(dateRange.end))
-//       .toList();
-
-//   return filteredHistory
-//       .map((h) => ChartSampleData(
-//             x: _getFormattedDate(h.time, frequency),
-//             y: h.battRem,
-//             secondSeriesYValue: h.cupsRem,
-//             thirdSeriesYValue: h.washRem1,
-//           ))
-//       .toList();
-// }
 
 String _getFormattedDate(DateTime date, String frequency) {
   switch (frequency) {

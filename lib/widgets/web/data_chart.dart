@@ -50,6 +50,8 @@ class _DataChartState extends State<DataChart> {
     final chartData = filterChartData(device.history, frequency, widget.offset);
     bool showAsLineChart = devicesProvider.showAsLineChart();
 
+    print("Chart data is ${chartData}");
+
     return SfCartesianChart(
       primaryXAxis: CategoryAxis(
         majorGridLines: const MajorGridLines(width: 0),
@@ -68,18 +70,17 @@ class _DataChartState extends State<DataChart> {
       tooltipBehavior: TooltipBehavior(
           enable: true,
           color: Colors.white,
-          // builder: (dynamic data, dynamic point, dynamic series, int pointIndex,
-          //     int seriesIndex) {
-          //   return Container(
-          //       height: 50,
-          //       width: 100,
-          //       child: Text('$pointIndex'),
-          //       decoration: const BoxDecoration(
-          //         color: DarkTheme.disabledWhite,
-          //       ));
-          // },
           textStyle: const TextStyle(color: DarkTheme.primaryBackground)),
-      legend: const Legend(isVisible: true, position: LegendPosition.bottom),
+      legend: const Legend(
+        isVisible: true,
+        position: LegendPosition.bottom,
+      ),
+      zoomPanBehavior: ZoomPanBehavior(
+          enablePanning: true,
+          enablePinching: true,
+          enableSelectionZooming: true,
+          enableMouseWheelZooming: true,
+          enableDoubleTapZooming: true),
     );
   }
 
@@ -95,8 +96,12 @@ class _DataChartState extends State<DataChart> {
             name: 'Battery Start',
             color: DarkTheme.primaryGreen.withOpacity(0.7),
             markerSettings: const MarkerSettings(isVisible: true),
-            dataLabelSettings:
-                const DataLabelSettings(isVisible: true, color: Colors.white),
+            enableTooltip: true,
+            dataLabelSettings: const DataLabelSettings(
+              isVisible: true,
+              color: Colors.white,
+              labelPosition: ChartDataLabelPosition.outside,
+            ),
           ),
           LineSeries<ChartSampleData, String>(
             dataSource: chartData,
@@ -105,8 +110,15 @@ class _DataChartState extends State<DataChart> {
             name: 'Battery End',
             color: DarkTheme.primaryGreen,
             markerSettings: const MarkerSettings(isVisible: true),
-            dataLabelSettings:
-                const DataLabelSettings(isVisible: true, color: Colors.white),
+            dataLabelSettings: DataLabelSettings(
+              isVisible: true,
+              color: Colors.white,
+              labelPosition: ChartDataLabelPosition.outside,
+              builder: (data, point, series, pointIndex, seriesIndex) => Text(
+                '${data.endBattRem?.toInt()} (${data.cupsUsed} cups)',
+                style: const TextStyle(color: Colors.white),
+              ),
+            ),
           ),
         ];
       case 2: // Battery
@@ -117,8 +129,12 @@ class _DataChartState extends State<DataChart> {
             yValueMapper: (ChartSampleData data, _) => data.startCupsRem,
             name: 'Cups Start',
             color: DarkTheme.primaryBlue.withOpacity(0.7),
-            markerSettings: MarkerSettings(isVisible: true),
-            dataLabelSettings: DataLabelSettings(isVisible: true),
+            markerSettings: const MarkerSettings(isVisible: true),
+            dataLabelSettings: const DataLabelSettings(
+              labelPosition: ChartDataLabelPosition.outside,
+              isVisible: true,
+              color: Colors.white,
+            ),
           ),
           LineSeries<ChartSampleData, String>(
             dataSource: chartData,
@@ -126,8 +142,16 @@ class _DataChartState extends State<DataChart> {
             yValueMapper: (ChartSampleData data, _) => data.endCupsRem,
             name: 'Cups End',
             color: DarkTheme.primaryBlue,
-            markerSettings: MarkerSettings(isVisible: true),
-            dataLabelSettings: DataLabelSettings(isVisible: true),
+            markerSettings: const MarkerSettings(isVisible: true),
+            dataLabelSettings: DataLabelSettings(
+              isVisible: true,
+              color: Colors.white,
+              labelPosition: ChartDataLabelPosition.outside,
+              builder: (data, point, series, pointIndex, seriesIndex) => Text(
+                '${data.endCupsRem?.toInt()} (${data.cupsUsed} cups)',
+                style: const TextStyle(color: Colors.white),
+              ),
+            ),
           ),
         ];
       case 3:
@@ -138,8 +162,12 @@ class _DataChartState extends State<DataChart> {
             yValueMapper: (ChartSampleData data, _) => data.startWashRem1,
             name: 'Liquid Start',
             color: DarkTheme.primaryPurple.withOpacity(0.7),
-            markerSettings: MarkerSettings(isVisible: true),
-            dataLabelSettings: DataLabelSettings(isVisible: true),
+            markerSettings: const MarkerSettings(isVisible: true),
+            dataLabelSettings: const DataLabelSettings(
+              isVisible: true,
+              labelPosition: ChartDataLabelPosition.outside,
+              color: Colors.white,
+            ),
           ),
           LineSeries<ChartSampleData, String>(
             dataSource: chartData,
@@ -147,8 +175,16 @@ class _DataChartState extends State<DataChart> {
             yValueMapper: (ChartSampleData data, _) => data.endWashRem1,
             name: 'Liquid End',
             color: DarkTheme.primaryPurple,
-            markerSettings: MarkerSettings(isVisible: true),
-            dataLabelSettings: DataLabelSettings(isVisible: true),
+            markerSettings: const MarkerSettings(isVisible: true),
+            dataLabelSettings: DataLabelSettings(
+              isVisible: true,
+              color: Colors.white,
+              labelPosition: ChartDataLabelPosition.outside,
+              builder: (data, point, series, pointIndex, seriesIndex) => Text(
+                '${data.endWashRem1?.toInt()} (${data.liquidUsed} mL Liquid)',
+                style: const TextStyle(color: Colors.white),
+              ),
+            ),
           ),
         ];
       default:
@@ -206,6 +242,8 @@ class ChartSampleData {
   final num? endBattRem;
   final num? endCupsRem;
   final num? endWashRem1;
+  final num? cupsUsed;
+  final num? liquidUsed;
 
   ChartSampleData({
     required this.x,
@@ -215,37 +253,10 @@ class ChartSampleData {
     this.endBattRem,
     this.endCupsRem,
     this.endWashRem1,
+    this.cupsUsed,
+    this.liquidUsed,
   });
 }
-
-// class ChartSampleData {
-//   ChartSampleData({
-//     this.x,
-//     this.y,
-//     this.xValue,
-//     this.yValue,
-//     this.secondSeriesYValue,
-//     this.thirdSeriesYValue,
-//   });
-
-//   /// Holds x value of the datapoint
-//   final dynamic x;
-
-//   /// Holds y value of the datapoint
-//   final num? y;
-
-//   /// Holds x value of the datapoint
-//   final dynamic xValue;
-
-//   /// Holds y value of the datapoint
-//   final num? yValue;
-
-//   /// Holds y value of the datapoint(for 2nd series)
-//   final num? secondSeriesYValue;
-
-//   /// Holds y value of the datapoint(for 3nd series)
-//   final num? thirdSeriesYValue;
-// }
 
 Color getColorBasedOnValue(num? y) {
   if (y! > 51) {

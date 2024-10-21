@@ -66,11 +66,13 @@ class ExcelHelper {
       headers = invoiceHeaders;
     }
 
+    sheet.getRangeByIndex(1, 1).setText(
+        "${!isInvoicing ? "Regular_" : "Invoicing_"}Devices${DateFormat.yMMMMd('en_US').format(startDate)}_${DateFormat.yMMMMd('en_US').format(endDate)}");
     for (int i = 0; i < headers.length; i++) {
-      sheet.getRangeByIndex(1, i + 1).setText(headers[i]);
+      sheet.getRangeByIndex(2, i + 1).setText(headers[i]);
     }
 
-    int currentRow = 2;
+    int currentRow = 3;
     if (!isInvoicing) {
       for (Device device in devices) {
         sheet.getRangeByIndex(currentRow, 1).setText(device.devId);

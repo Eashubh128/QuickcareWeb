@@ -25,6 +25,7 @@ class AppStrings {
   static const String forgotPass = 'Forgot Password?';
   static const String emailID = "Email Id";
   static const String name = "Name";
+  static const String userName = "Username";
   static const String searchDevices = "Search devices";
   static const String noInfoOfDevices = "No information of devices";
   static const String location = "Location";

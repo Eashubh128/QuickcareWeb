@@ -49,7 +49,7 @@ class _SigninWebContainerState extends State<SigninWebContainer> {
             height: 24.h,
           ),
           Text(
-            AppStrings.emailID,
+            AppStrings.userName,
             style: TextStyle(
               color: Colors.white,
               fontSize: 14.sp,

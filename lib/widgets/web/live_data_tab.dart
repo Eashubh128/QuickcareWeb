@@ -549,6 +549,7 @@ class _LiveDataTabState extends State<LiveDataTab>
     return Column(
       children: [
         Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ChartNavigation(
               frequency: selectedFrequency,
@@ -559,25 +560,25 @@ class _LiveDataTabState extends State<LiveDataTab>
                 });
               },
             ),
-            const Spacer(),
-            const Text(
-              'Chart Type: ',
-              style: TextStyle(color: DarkTheme.primaryWhite),
-            ),
-            Switch(
-              value:
-                  Provider.of<DevicesListProvider>(context).showAsLineChart(),
-              onChanged: (value) {
-                Provider.of<DevicesListProvider>(context, listen: false)
-                    .toggleChartType();
-              },
-            ),
-            Text(
-              Provider.of<DevicesListProvider>(context).showAsLineChart()
-                  ? 'Line'
-                  : 'Range Column',
-              style: const TextStyle(color: DarkTheme.primaryWhite),
-            ),
+            // const Spacer(),
+            // const Text(
+            //   'Chart Type: ',
+            //   style: TextStyle(color: DarkTheme.primaryWhite),
+            // ),
+            // Switch(
+            //   value:
+            //       Provider.of<DevicesListProvider>(context).showAsLineChart(),
+            //   onChanged: (value) {
+            //     Provider.of<DevicesListProvider>(context, listen: false)
+            //         .toggleChartType();
+            //   },
+            // ),
+            // Text(
+            //   Provider.of<DevicesListProvider>(context).showAsLineChart()
+            //       ? 'Line'
+            //       : 'Range Column',
+            //   style: const TextStyle(color: DarkTheme.primaryWhite),
+            // ),
           ],
         ),
         Container(
